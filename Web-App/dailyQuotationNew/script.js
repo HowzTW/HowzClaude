@@ -221,35 +221,17 @@ async function downloadPoster() {
     btn.disabled = true;
 
     try {
-        // [CRITICAL] To capture exactly 1500x2000 from a 500px responsive element:
-        // Use scale: 3 (500 * 3 = 1500)
         const canvas = await html2canvas(target, {
             useCORS: true,
             allowTaint: true,
-            scale: 2.5,       // 600 * 2.5 = 1500px, 800 * 2.5 = 2000px (exact, integer)
-            width: 600,
-            height: 800,      // 600 * 4/3 = 800 (integer, no decimal rounding!)
+            scale: 1,
             backgroundColor: null,
             logging: false,
             imageTimeout: 0,
             onclone: (clonedDoc) => {
                 const clonedTarget = clonedDoc.getElementById('poster_card');
-                clonedTarget.style.width = '600px';
-                clonedTarget.style.height = '800px'; // exact integer, no rounding issues
-                clonedTarget.style.maxWidth = 'none';
-                clonedTarget.style.maxHeight = 'none';
                 clonedTarget.style.boxShadow = 'none';
                 clonedTarget.style.border = 'none';
-
-                // html2canvas treats z-index stacking contexts as opaque layers,
-                // filling them with white. Override z-index here so the quote-content
-                // is transparent in the captured image (browser preview is unaffected).
-                const style = clonedDoc.createElement('style');
-                style.textContent = `
-                    .quote-content { z-index: auto !important; background: transparent !important; }
-                    .quote-content::before, .quote-content::after { z-index: auto !important; }
-                `;
-                clonedDoc.head.appendChild(style);
             }
         });
 
@@ -257,14 +239,7 @@ async function downloadPoster() {
         const link = document.createElement('a');
         link.download = `DailyQuote_${dateStr.replace('月', '').replace('日', '')}.png`;
 
-        // Force output to exactly 1500x2000 regardless of what html2canvas captured
-        const finalCanvas = document.createElement('canvas');
-        finalCanvas.width = 1500;
-        finalCanvas.height = 2000;
-        const ctx = finalCanvas.getContext('2d');
-        ctx.drawImage(canvas, 0, 0, 1500, 2000);
-
-        finalCanvas.toBlob((blob) => {
+        canvas.toBlob((blob) => {
             if (!blob) throw new Error("Canvas toBlob failed");
             const url = URL.createObjectURL(blob);
             link.href = url;
