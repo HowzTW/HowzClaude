@@ -240,6 +240,16 @@ async function downloadPoster() {
                 clonedTarget.style.maxHeight = 'none';
                 clonedTarget.style.boxShadow = 'none';
                 clonedTarget.style.border = 'none';
+
+                // html2canvas treats z-index stacking contexts as opaque layers,
+                // filling them with white. Override z-index here so the quote-content
+                // is transparent in the captured image (browser preview is unaffected).
+                const style = clonedDoc.createElement('style');
+                style.textContent = `
+                    .quote-content { z-index: auto !important; background: transparent !important; }
+                    .quote-content::before, .quote-content::after { z-index: auto !important; }
+                `;
+                clonedDoc.head.appendChild(style);
             }
         });
 
