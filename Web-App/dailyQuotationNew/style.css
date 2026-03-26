@@ -368,6 +368,7 @@ input:focus, textarea:focus {
     border-radius: 0;
     width: 100%;
     aspect-ratio: 3 / 4;
+    height: 800px;
     padding: 30px 20px;
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     display: flex;
