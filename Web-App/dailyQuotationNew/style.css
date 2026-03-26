@@ -406,6 +406,7 @@ input:focus, textarea:focus {
     word-break: break-word;
     position: relative;
     z-index: 1; /* Fix for missing quotes in preview */
+    background: transparent; /* Prevent html2canvas from filling stacking context with white */
     margin: 0;
     padding: 20px 30px;
     flex: 1;
