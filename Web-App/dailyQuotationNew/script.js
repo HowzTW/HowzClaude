@@ -252,7 +252,34 @@ async function downloadPoster() {
         const ctx = finalCanvas.getContext('2d');
         ctx.drawImage(canvas, 0, 0, 1500, 2000);
 
-        finalCanvas.toBlob((blob) => {
+        // Scan bottom rows and crop white/transparent area
+        const checkRows = 300;
+        const imgData = ctx.getImageData(0, 2000 - checkRows, 1500, checkRows).data;
+        let trimRows = 0;
+        for (let y = checkRows - 1; y >= 0; y--) {
+            let rowIsWhite = true;
+            for (let x = 0; x < 1500; x++) {
+                const i = (y * 1500 + x) * 4;
+                const a = imgData[i + 3];
+                const r = imgData[i], g = imgData[i + 1], b = imgData[i + 2];
+                if (a > 10 && !(r > 250 && g > 250 && b > 250)) {
+                    rowIsWhite = false;
+                    break;
+                }
+            }
+            if (rowIsWhite) trimRows++;
+            else break;
+        }
+
+        const outputCanvas = trimRows > 0 ? (() => {
+            const c = document.createElement('canvas');
+            c.width = 1500;
+            c.height = 2000 - trimRows;
+            c.getContext('2d').drawImage(finalCanvas, 0, 0);
+            return c;
+        })() : finalCanvas;
+
+        outputCanvas.toBlob((blob) => {
             if (!blob) throw new Error("Canvas toBlob failed");
             const url = URL.createObjectURL(blob);
             link.href = url;
