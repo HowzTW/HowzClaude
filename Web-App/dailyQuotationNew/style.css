@@ -405,8 +405,6 @@ input:focus, textarea:focus {
     color: var(--text-main);
     word-break: break-word;
     position: relative;
-    z-index: 1; /* Fix for missing quotes in preview */
-    background: transparent; /* Prevent html2canvas from filling stacking context with white */
     margin: 0;
     padding: 20px 30px;
     flex: 1;
@@ -430,7 +428,6 @@ input:focus, textarea:focus {
     opacity: 1;
     line-height: 1;
     pointer-events: none;
-    z-index: -1;
 }
 
 .quote-content::after {
@@ -444,7 +441,6 @@ input:focus, textarea:focus {
     opacity: 1;
     line-height: 1;
     pointer-events: none;
-    z-index: -1;
 }
 
 .quote-author {
