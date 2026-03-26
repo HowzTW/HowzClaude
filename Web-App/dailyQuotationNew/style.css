@@ -375,7 +375,7 @@ input:focus, textarea:focus {
     align-items: center;
     gap: 5px;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
 }
 

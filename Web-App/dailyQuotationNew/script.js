@@ -240,7 +240,6 @@ async function downloadPoster() {
                 clonedTarget.style.maxHeight = 'none';
                 clonedTarget.style.boxShadow = 'none';
                 clonedTarget.style.border = 'none';
-                clonedTarget.style.overflow = 'hidden';
             }
         });
 
