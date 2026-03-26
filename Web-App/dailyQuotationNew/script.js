@@ -247,7 +247,14 @@ async function downloadPoster() {
         const link = document.createElement('a');
         link.download = `DailyQuote_${dateStr.replace('月', '').replace('日', '')}.png`;
 
-        canvas.toBlob((blob) => {
+        // Force output to exactly 1500x2000 regardless of what html2canvas captured
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = 1500;
+        finalCanvas.height = 2000;
+        const ctx = finalCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, 0, 1500, 2000);
+
+        finalCanvas.toBlob((blob) => {
             if (!blob) throw new Error("Canvas toBlob failed");
             const url = URL.createObjectURL(blob);
             link.href = url;
