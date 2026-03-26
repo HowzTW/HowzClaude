@@ -224,22 +224,35 @@ async function downloadPoster() {
         const canvas = await html2canvas(target, {
             useCORS: true,
             allowTaint: true,
-            scale: 1,
+            scale: 2.5,
+            width: 600,
+            height: 800,
             backgroundColor: null,
             logging: false,
             imageTimeout: 0,
             onclone: (clonedDoc) => {
                 const clonedTarget = clonedDoc.getElementById('poster_card');
+                clonedTarget.style.width = '600px';
+                clonedTarget.style.height = '800px';
+                clonedTarget.style.maxWidth = 'none';
+                clonedTarget.style.maxHeight = 'none';
                 clonedTarget.style.boxShadow = 'none';
                 clonedTarget.style.border = 'none';
+                clonedTarget.style.overflow = 'hidden';
             }
         });
 
-        // Download logic
+        // Download logic — force output to exactly 1500x2000
         const link = document.createElement('a');
         link.download = `DailyQuote_${dateStr.replace('月', '').replace('日', '')}.png`;
 
-        canvas.toBlob((blob) => {
+        const finalCanvas = document.createElement('canvas');
+        finalCanvas.width = 1500;
+        finalCanvas.height = 2000;
+        const ctx = finalCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, 0, 1500, 2000);
+
+        finalCanvas.toBlob((blob) => {
             if (!blob) throw new Error("Canvas toBlob failed");
             const url = URL.createObjectURL(blob);
             link.href = url;

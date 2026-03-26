@@ -368,7 +368,6 @@ input:focus, textarea:focus {
     border-radius: 0;
     width: 100%;
     aspect-ratio: 3 / 4;
-    height: 800px;
     padding: 30px 20px;
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     display: flex;
@@ -376,7 +375,7 @@ input:focus, textarea:focus {
     align-items: center;
     gap: 5px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
 }
 
@@ -405,6 +404,7 @@ input:focus, textarea:focus {
     color: var(--text-main);
     word-break: break-word;
     position: relative;
+    z-index: 1; /* Fix for missing quotes in preview */
     margin: 0;
     padding: 20px 30px;
     flex: 1;
@@ -428,6 +428,7 @@ input:focus, textarea:focus {
     opacity: 1;
     line-height: 1;
     pointer-events: none;
+    z-index: -1;
 }
 
 .quote-content::after {
@@ -441,6 +442,7 @@ input:focus, textarea:focus {
     opacity: 1;
     line-height: 1;
     pointer-events: none;
+    z-index: -1;
 }
 
 .quote-author {
